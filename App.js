@@ -1,10 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { enableScreens } from 'react-native-screens';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -12,33 +10,27 @@ import DeckScreen from './screens/DeckScreen';
 import MapScreen from './screens/MapScreen';
 import ReviewScreen from './screens/ReviewScreen';
 import SettingScreen from './screens/SettingScreen';
-enableScreens();
+
 class App extends React.Component {
   render() {
     const Tab = createBottomTabNavigator();
-    const Stack = createNativeStackNavigator();
+    const Stack = createStackNavigator();
 
     function MyStack({ navigation }) {
       return (
-        <Stack.Navigator initialRouteName="Review jobs">
+        <Stack.Navigator>
           <Stack.Screen
             options={{
               headerRight: () => (
-                <Button
+                <Text
+                  style={styles.buttonSetting}
                   onPress={() => navigation.navigate('Setting')}
-                  title="Setting"
-                />
+                >
+                  Setting
+                </Text>
               ),
-              headerStyle: {
-                backgroundColor: '#f4511e',
-                height: '120px',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
             }}
-            name="Review"
+            name="Review Jobs"
             component={ReviewScreen}
           />
           <Stack.Screen name="Setting" component={SettingScreen} />
@@ -51,14 +43,14 @@ class App extends React.Component {
         <Tab.Navigator>
           <Tab.Screen name="Deck" component={DeckScreen} />
           <Tab.Screen name="Map" component={MapScreen} />
-          <Tab.Screen name="Review" component={MyStack} />
+          <Tab.Screen name="Review Jobs" component={MyStack} />
         </Tab.Navigator>
       );
     }
 
     return (
       <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator style={styles.containerForAndroid}>
           <Tab.Screen name="Home" component={WelcomeScreen} />
           <Tab.Screen name="Settings" component={AuthScreen} />
           <Tab.Screen name="Main" component={main} />
@@ -74,6 +66,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerForAndroid: {
+    color: 'red',
+  },
+  buttonSetting: {
+    color: Platform.OS === 'android' ? 'red' : 'rgba(0, 122,255,1)',
+    paddingRight: 10,
   },
 });
 

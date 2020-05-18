@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,6 +15,20 @@ class App extends React.Component {
   render() {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
+
+    function main() {
+      return (
+        <Tab.Navigator
+          tabBarOptions={{
+            style: Platform.OS === 'android' && styles.containerForAndroid,
+          }}
+        >
+          <Tab.Screen name="Deck" component={DeckScreen} />
+          <Tab.Screen name="Map" component={MapScreen} />
+          <Tab.Screen name="Review Jobs" component={MyStack} />
+        </Tab.Navigator>
+      );
+    }
 
     function MyStack({ navigation }) {
       return (
@@ -38,21 +52,15 @@ class App extends React.Component {
       );
     }
 
-    function main() {
-      return (
-        <Tab.Navigator>
-          <Tab.Screen name="Deck" component={DeckScreen} />
-          <Tab.Screen name="Map" component={MapScreen} />
-          <Tab.Screen name="Review Jobs" component={MyStack} />
-        </Tab.Navigator>
-      );
-    }
-
     return (
       <NavigationContainer>
-        <Tab.Navigator style={styles.containerForAndroid}>
+        <Tab.Navigator
+          tabBarOptions={{
+            style: Platform.OS === 'android' && styles.containerForAndroid,
+          }}
+        >
           <Tab.Screen name="Home" component={WelcomeScreen} />
-          <Tab.Screen name="Settings" component={AuthScreen} />
+          <Tab.Screen name="Auth" component={AuthScreen} />
           <Tab.Screen name="Main" component={main} />
         </Tab.Navigator>
       </NavigationContainer>
@@ -68,11 +76,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   containerForAndroid: {
-    color: 'red',
+    paddingBottom: 20,
+    height: 60,
   },
   buttonSetting: {
-    color: Platform.OS === 'android' ? 'red' : 'rgba(0, 122,255,1)',
-    paddingRight: 10,
+    color: 'rgba(0, 122,255,1)',
+    paddingRight: 12,
   },
 });
 

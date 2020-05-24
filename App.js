@@ -12,6 +12,7 @@ import DeckScreen from './screens/DeckScreen';
 import MapScreen from './screens/MapScreen';
 import ReviewScreen from './screens/ReviewScreen';
 import SettingScreen from './screens/SettingScreen';
+import { Icon } from 'react-native-elements';
 
 class App extends React.Component {
   render() {
@@ -25,9 +26,52 @@ class App extends React.Component {
             style: Platform.OS === 'android' && styles.containerForAndroid,
           }}
         >
-          <Tab.Screen name="Map" component={MapScreen} />
-          <Tab.Screen name="Deck" component={DeckScreen} />
-          <Tab.Screen name="Review Jobs" component={MyStack} />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return (
+                  <Icon
+                    name="my-location"
+                    size={20}
+                    color={focused ? 'rgba(0, 122,255,1)' : 'gray'}
+                  />
+                );
+              },
+            }}
+            name="Map"
+            component={MapScreen}
+          />
+          <Tab.Screen
+            options={{
+              tabBarLabel: 'Jobs',
+              tabBarIcon: ({ focused }) => {
+                return (
+                  <Icon
+                    name="description"
+                    size={20}
+                    color={focused ? 'rgba(0, 122,255,1)' : 'gray'}
+                  />
+                );
+              },
+            }}
+            name="Deck"
+            component={DeckScreen}
+          />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return (
+                  <Icon
+                    name="favorite"
+                    size={20}
+                    color={focused ? 'rgba(0, 122,255,1)' : 'gray'}
+                  />
+                );
+              },
+            }}
+            name="Review Jobs"
+            component={MyStack}
+          />
         </Tab.Navigator>
       );
     }
@@ -93,6 +137,7 @@ const styles = StyleSheet.create({
   },
   containerForAndroid: {
     paddingBottom: 20,
+    paddingTop: 5,
     height: 60,
   },
   buttonSetting: {

@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { LIKE_JOB, CLEAR_LIKED_JOBS } from '../actions/types';
-import { REHYDRATE } from 'redux-persist/lib/constants';
+import { PERSIST_REHYDRATE } from 'redux-persist/lib/constants';
 
 export default function (state = [], action) {
   switch (action.type) {
-    case REHYDRATE:
-      return action.payload.likedJob || [];
+    case PERSIST_REHYDRATE:
+      return action.payload.likedJobs || [];
     case LIKE_JOB:
       // only capture one job and not duplicate job
       // contain new array where the new job ha has liked and push with the other

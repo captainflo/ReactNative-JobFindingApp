@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
-import store from './store';
+import configureStore from './store';
+import { PersistGate } from 'redux-persist/es/integration/react';
 
 import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -18,7 +19,7 @@ class App extends React.Component {
   render() {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
-
+    const { persistor, store } = configureStore();
     function main() {
       return (
         <Tab.Navigator
@@ -100,29 +101,31 @@ class App extends React.Component {
 
     return (
       <Provider store={store}>
-        <NavigationContainer>
-          <Tab.Navigator
-            tabBarOptions={{
-              style: Platform.OS === 'android' && styles.containerForAndroid,
-            }}
-          >
-            <Tab.Screen
-              options={{ tabBarVisible: false }}
-              name="Home"
-              component={WelcomeScreen}
-            />
-            <Tab.Screen
-              options={{ tabBarVisible: false }}
-              name="Auth"
-              component={AuthScreen}
-            />
-            <Tab.Screen
-              options={{ tabBarVisible: false }}
-              name="Main"
-              component={main}
-            />
-          </Tab.Navigator>
-        </NavigationContainer>
+        <PersistGate persistor={persistor}>
+          <NavigationContainer>
+            <Tab.Navigator
+              tabBarOptions={{
+                style: Platform.OS === 'android' && styles.containerForAndroid,
+              }}
+            >
+              <Tab.Screen
+                options={{ tabBarVisible: false }}
+                name="Home"
+                component={WelcomeScreen}
+              />
+              <Tab.Screen
+                options={{ tabBarVisible: false }}
+                name="Auth"
+                component={AuthScreen}
+              />
+              <Tab.Screen
+                options={{ tabBarVisible: false }}
+                name="Main"
+                component={main}
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </PersistGate>
       </Provider>
     );
   }
